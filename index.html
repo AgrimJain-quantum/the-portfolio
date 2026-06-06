@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agrim Jain — Hybrid Portfolio (Engineering &amp; Creative)</title>
+  <meta name="description" content="Portfolio of Agrim Jain: EEE student, ML &amp; AI Systems Engineer, Video Editor, Photographer, and Digital Storyteller.">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body class="gateway-active">
+
+  <!-- Custom Pointer Cursors -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- Noise Background Texturing -->
+  <div class="noise-overlay"></div>
+  
+  <!-- Interactive Animation Canvas -->
+  <canvas id="canvas-bg"></canvas>
+  
+  <!-- Grid overlay for tech aesthetic -->
+  <div class="grid-overlay"></div>
+
+  <!-- NAVIGATION -->
+  <nav id="navbar">
+    <button id="creative-back-gateway" class="creative-back-btn">&larr; BACK TO GATEWAY</button>
+    <ul class="nav-links">
+      <li><a href="#creative-home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Selected Works</a></li>
+      <li><a href="#creative-gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ENGINEERING TOPBAR (visible only in mode-engineering) -->
+  <div id="eng-topbar" class="eng-only">
+    <button id="eng-back-gateway" class="eng-topbar-btn">
+      <span class="eng-icon">←</span> BACK TO GATEWAY
+    </button>
+    <div class="eng-topbar-title">PORTFOLIO_SYSTEM_v1.0_RED</div>
+    <div class="eng-topbar-actions">
+      <a href="#contact" class="eng-topbar-icon" title="Contact System">✉</a>
+      <div class="eng-topbar-icon status-indicator" title="System Status">⌖</div>
+    </div>
+  </div>
+
+  <!-- ENGINEERING SIDEBAR (visible only in mode-engineering) -->
+  <aside id="eng-sidebar" class="eng-only">
+    <div class="eng-sidebar-header">
+      <h2>Root</h2>
+      <div class="eng-sidebar-subtitle">DUAL-STATE SYSTEM</div>
+    </div>
+    <ul class="eng-sidebar-menu">
+      <li class="active"><a href="#about" data-target="about"><span class="eng-menu-icon">▰</span> DIAGNOSTICS</a></li>
+      <li><a href="#eng-about-details" data-target="eng-about-details"><span class="eng-menu-icon">■</span> ABOUT</a></li>
+      <li><a href="#skills" data-target="skills"><span class="eng-menu-icon">⚬</span> TECH_SKILLS</a></li>
+      <li><a href="#projects" data-target="projects"><span class="eng-menu-icon">&lt;/&gt;</span> PROJECTS</a></li>
+      <li><a href="#contact" data-target="contact"><span class="eng-menu-icon">ⓘ</span> ABOUT_SYS</a></li>
+    </ul>
+    <div class="eng-sidebar-footer">
+      <div class="eng-user-badge">
+        <div class="eng-user-avatar">AJ</div>
+        <div class="eng-user-info">
+          <div class="eng-user-name">AGRIM JAIN</div>
+          <div class="eng-user-role">ML & AI ENGINEER</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- HERO SECTION -->
+  <section id="hero" style="padding: 0; min-height: 100vh; display: block; overflow: hidden; width: 100%;">
+    <div class="hero-gateway">
+      <!-- Left Panel: Engineering -->
+      <div class="hero-split hero-split-left" id="hero-split-eng">
+        <div class="split-top">
+          <div class="tech-metadata">COORD: 52.5200° N, 13.4050° E</div>
+          <div class="tech-metadata">OS: CORE_SYSTEM_v1.0.4</div>
+        </div>
+        
+        <div class="split-center">
+          <div class="split-mode-label">// MODE_01</div>
+          <h1 class="split-heading-eng">ENGINEERING</h1>
+          <p class="split-sub-eng">[ SYSTEM_LOG: Accessing technical infrastructure. ]</p>
+          <button class="split-btn-eng" id="hero-btn-eng">ENTER TERMINAL</button>
+        </div>
+        
+        <div class="split-bottom">
+          <div class="tech-metadata">&lt;READY_STATE&gt;</div>
+        </div>
+      </div>
+      
+      <!-- Divider Line with Badge -->
+      <div class="hero-divider">
+        <div class="bridge-badge">BRIDGE_NULL</div>
+      </div>
+      
+      <!-- Right Panel: Creative -->
+      <div class="hero-split hero-split-right" id="hero-split-cr">
+        <div class="split-top text-right">
+          <div class="creative-metadata">P-01 / VISUALS</div>
+        </div>
+        
+        <div class="split-center">
+          <div class="split-mode-label">MODE 02</div>
+          <h1 class="split-heading-cr">Creative</h1>
+          <p class="split-sub-cr">Exploring visual narratives through clarity, rhythm, and intensity.</p>
+          <button class="split-btn-cr" id="hero-btn-cr">ENTER GALLERY</button>
+        </div>
+        
+        <div class="split-bottom text-right">
+          <div class="creative-metadata-red">EST. MMXXIV</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREATIVE HERO / HOME PAGE (visible only in mode-creative) -->
+  <section id="creative-home" class="creative-only">
+    <div class="section-inner">
+      <div class="creative-hero-grid">
+        <!-- Column 1: Giant Heading & Statement -->
+        <div class="creative-hero-left reveal">
+          <div class="creative-title-wrap">
+            <span class="creative-pretitle">AJ / VISUAL STAGE</span>
+            <h1 class="creative-main-title">AGRIM<br>JAIN</h1>
+          </div>
+          <p class="creative-tagline">
+            Photographer and video editor combining technical precision with artistic expression to document moments, edit stories, and create cinematic experiences that leave a lasting impression.
+          </p>
+          
+          <!-- Quick stats inside left column -->
+          <div class="creative-hero-stats">
+            <div class="creative-stat-row">
+              <span class="stat-number">11+</span>
+              <span class="stat-text">Video Reels Produced</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="stat-number">12+</span>
+              <span class="stat-text">Photography Highlights</span>
+            </div>
+            <div class="creative-stat-row">
+              <span class="stat-number">99%</span>
+              <span class="stat-text">Precision & Intensity</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Capabilities / Services Accordion -->
+        <div class="creative-hero-right reveal reveal-delay-1">
+          <h2 class="creative-section-label">CAPABILITIES & SERVICES</h2>
+          
+          <div class="accordion-container">
+            <div class="accordion-item active">
+              <div class="accordion-header">
+                <h3>01 / Motion Design</h3>
+                <span class="accordion-icon">—</span>
+              </div>
+              <div class="accordion-content">
+                <p>Developing engaging text dynamics, title animations, and smooth kinetic assets to elevate promotional and narrative content.</p>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <div class="accordion-header">
+                <h3>02 / Cinematic Video Editing</h3>
+                <span class="accordion-icon">+</span>
+              </div>
+              <div class="accordion-content">
+                <p>Crafting event recap edits, promotional videos, and social media reels. Precision cuts synchronized to custom soundscapes and dynamic audio.</p>
+              </div>
+            </div>
+            
+            <div class="accordion-item">
+              <div class="accordion-header">
+                <h3>03 / Photography & Grading</h3>
+                <span class="accordion-icon">+</span>
+              </div>
+              <div class="accordion-content">
+                <p>Capturing portraits, events, and cultural landscapes. High-contrast color correction and storytelling perspective adjustments.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience Timeline -->
+          <div class="creative-timeline-wrap">
+            <h2 class="creative-section-label">EXPERIENCE TIMELINE</h2>
+            <div class="creative-timeline">
+              <div class="timeline-row">
+                <div class="timeline-meta">JAN 2026 - FEB 2026</div>
+                <div class="timeline-detail">
+                  <strong>Media Director (Videographer)</strong>
+                  <span>ELYSIUM MUJ &bull; Part-time &bull; Jaipur (On-site)</span>
+                </div>
+              </div>
+              <div class="timeline-row">
+                <div class="timeline-meta">NOV 2025 - JAN 2026</div>
+                <div class="timeline-detail">
+                  <strong>Social Media Colead (Manager)</strong>
+                  <span>Techstars Startup Weekend Jaipur &bull; Part-time &bull; Jaipur (On-site)</span>
+                </div>
+              </div>
+              <div class="timeline-row">
+                <div class="timeline-meta">FEB 2025 - MAR 2025</div>
+                <div class="timeline-detail">
+                  <strong>Social Media Manager</strong>
+                  <span>MUJ Oneiros &bull; Part-time</span>
+                </div>
+              </div>
+              <div class="timeline-row">
+                <div class="timeline-meta">AUG 2024 - APR 2025</div>
+                <div class="timeline-detail">
+                  <strong>Joint Head of Media</strong>
+                  <span>IEEE CS MUJ &bull; Part-time &bull; Jaipur (On-site)</span>
+                </div>
+              </div>
+              <div class="timeline-row">
+                <div class="timeline-meta">OCT 2024 - NOV 2024</div>
+                <div class="timeline-detail">
+                  <strong>Video Editor</strong>
+                  <span>Genesis MUJ &bull; Part-time</span>
+                </div>
+              </div>
+              <div class="timeline-row">
+                <div class="timeline-meta">JUL 2024 - SEP 2024</div>
+                <div class="timeline-detail">
+                  <strong>Video Editor</strong>
+                  <span>MUJHackX &bull; Part-time &bull; Jaipur (On-site)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ABOUT ME -->
+  <section id="about">
+    <!-- CREATIVE MODE ABOUT -->
+    <div class="section-inner creative-only">
+      <div class="section-label reveal">Profile</div>
+      <h2 class="section-title reveal reveal-delay-1">Who I Am</h2>
+      
+      <div class="about-layout about-layout-stacked">
+        <div class="about-media-wrapper reveal reveal-delay-2">
+          <div class="about-frame about-frame-hero">
+            <img src="images/WhatsApp Image 2026-06-06 at 11.10.13 PM.jpeg" alt="Agrim Jain Portrait">
+          </div>
+          <div class="about-frame-glow"></div>
+        </div>
+
+        <div class="about-text reveal reveal-delay-3">
+          <p>
+            I am a photographer and video editor who enjoys capturing stories through visuals. What started as a curiosity for cameras and editing gradually became a way of observing the world more closely—finding interesting details, emotions, and moments that often go unnoticed.
+          </p>
+          <p>
+            Through photography, I explore perspectives, light, composition, and the unique character of places and people. Through video editing, I bring those moments together to create engaging narratives that connect with audiences and leave a lasting impression. Whether it's documenting an event, creating cinematic visuals, or experimenting with new editing styles, I am always looking for ways to improve my craft and tell better stories.
+          </p>
+          <p>
+            My creative work is driven by a simple belief: every frame should have a purpose, and every project should communicate something meaningful. I enjoy blending technical precision with artistic expression to create content that is both visually appealing and impactful.
+          </p>
+          <p>
+            Outside of creative projects, my background in engineering influences how I approach visual storytelling—combining creativity with structure, attention to detail, and continuous learning.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENGINEERING MODE ABOUT (Matrix Red style) -->
+    <div class="section-inner eng-only">
+      <!-- UPTIME / SYSTEM_IDENTITY_MANIFESTO -->
+      <div class="eng-terminal-box reveal">
+        <div class="eng-box-header">
+          <span class="eng-box-dots"><span></span><span></span><span></span></span>
+          <span class="eng-box-title">SYSTEM_IDENTITY_MANIFESTO</span>
+          <span class="eng-box-meta">UPTIME : 99.99%</span>
+        </div>
+        <div class="eng-box-body">
+          <p><span class="eng-label">[BIO]</span> Agrim Jain | ML & AI Engineer</p>
+          <p><span class="eng-label">[ENGINEERING_ROOTS]</span> Electrical and Electronics Engineering</p>
+          <p><span class="eng-label">[SPECIALTY]</span> Building intelligent solutions at the intersection of electrical engineering and artificial intelligence.</p>
+          <p><span class="eng-label">[PHILOSOPHY]</span> Research-driven development focusing on the 'why' behind the algorithms.</p>
+          <p><span class="eng-label">[STATUS]</span> Strengthening ML foundations while shipping real-world AI projects.</p>
+          <p><span class="eng-label">[LOCATION]</span> Meerut, Uttar Pradesh, India</p>
+          
+          <div class="eng-terminal-prompt">
+            <span class="prompt-user">system@root:~$</span> <input type="text" class="prompt-input" value="finger agrim_jain" readonly>
+          </div>
+        </div>
+      </div>
+
+      <div id="eng-about-details" class="eng-about-layout">
+        <!-- Profile Picture panel -->
+        <div class="eng-architect-panel reveal reveal-delay-1">
+          <div class="eng-box-header mini">
+            <span class="eng-box-title">ABOUT_THE_ARCHITECT</span>
+          </div>
+          <div class="eng-architect-body">
+            <div class="eng-avatar-monitor">
+              <img src="images/about-agrim.jpg" alt="Agrim Jain Portrait" class="scanline-img">
+              <div class="monitor-glare"></div>
+            </div>
+            <div class="eng-architect-meta">
+              <p><span>NAME:</span> AGRIM_JAIN</p>
+              <p><span>ROLE:</span> ML_&_AI_ENGINEER</p>
+              <p><span>SPECIALTY:</span> AI_SYSTEMS</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bio text -->
+        <div class="eng-bio-panel reveal reveal-delay-2">
+          <h2 class="eng-section-header">Who_I_Am</h2>
+          <div class="eng-bio-text">
+            <p>I'm Agrim Jain, an Electrical & Electronics Engineering student at Manipal University Jaipur with a growing focus on Machine Learning, MLOps, and intelligent energy systems.</p>
+            <p>My journey into technology began with curiosity about how data can be used to solve real-world problems. Today, I build machine learning projects, explore automation workflows, and work on research-driven solutions that combine engineering principles with artificial intelligence. My current work includes electricity load forecasting using machine learning and the development of smart energy management systems inspired by modern power grids.</p>
+            <p>Beyond academics, I have experience leading creative and technical initiatives as Joint Head of Media at IEEE CS MUJ, where I developed skills in collaboration, communication, and project execution. This blend of engineering and creativity has shaped how I approach problem-solving—combining analytical thinking with user-focused design.</p>
+            <p>I'm currently strengthening my foundations in Python, Machine Learning, Data Structures & Algorithms, and MLOps while working toward building production-ready AI systems. My goal is to contribute to impactful technologies in AI, automation, and intelligent infrastructure.</p>
+            <p>When I'm not building projects, you'll find me exploring new technologies, editing videos, capturing moments through photography, or learning something that pushes me closer to becoming a better engineer.</p>
+          </div>
+          <div class="eng-quote">
+            "Currently strengthening ML foundations while shipping real-world AI projects – proving well-engineered classical ML can hold its own."
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- CAPABILITIES & SKILLS -->
+  <section id="skills">
+    <!-- CREATIVE MODE SKILLS -->
+    <div class="section-inner creative-only">
+      <div class="section-label reveal">Capabilities</div>
+      <h2 class="section-title reveal reveal-delay-1">Skills &amp; Tools</h2>
+      
+      <div class="skills-container creative-skills-single reveal reveal-delay-2">
+        <!-- Creative capabilities -->
+        <div class="skills-column">
+          <h3><span>🎬</span> Video &amp; Photography</h3>
+          <div class="skills-grid">
+            <div class="skill-chip"><span class="dot"></span>Premiere Pro</div>
+            <div class="skill-chip"><span class="dot"></span>DaVinci Resolve</div>
+            <div class="skill-chip"><span class="dot"></span>Final Cut Pro</div>
+            <div class="skill-chip"><span class="dot"></span>Color Grading</div>
+            <div class="skill-chip"><span class="dot"></span>Cinematography</div>
+            <div class="skill-chip"><span class="dot"></span>Event Photography</div>
+            <div class="skill-chip"><span class="dot"></span>Photo Editing</div>
+            <div class="skill-chip"><span class="dot"></span>Audio Design</div>
+            <div class="skill-chip"><span class="dot"></span>Social Media Reels</div>
+            <div class="skill-chip"><span class="dot"></span>Visual Storytelling</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENGINEERING MODE SKILLS -->
+    <div class="section-inner eng-only">
+      <h2 class="eng-section-header">SYSTEM_SPECIFICATIONS_&_STACKS</h2>
+
+      <div class="eng-skills-layout">
+        <!-- Core Capabilities Progress bars -->
+        <div class="eng-skills-card reveal">
+          <div class="eng-box-header">
+            <span class="eng-box-title">&lt;/&gt; CORE_CAPABILITIES</span>
+          </div>
+          <div class="eng-skills-body">
+            <div class="eng-progress-item">
+              <div class="eng-progress-info">
+                <span class="eng-progress-label">PYTHON</span>
+                <span class="eng-progress-value">95% Proficiency</span>
+              </div>
+              <div class="eng-progress-bar-track">
+                <div class="eng-progress-bar-fill" style="width: 95%"></div>
+              </div>
+            </div>
+            
+            <div class="eng-progress-item">
+              <div class="eng-progress-info">
+                <span class="eng-progress-label">MACHINE LEARNING</span>
+                <span class="eng-progress-value">90% Proficiency</span>
+              </div>
+              <div class="eng-progress-bar-track">
+                <div class="eng-progress-bar-fill" style="width: 90%"></div>
+              </div>
+            </div>
+
+            <div class="eng-progress-item">
+              <div class="eng-progress-info">
+                <span class="eng-progress-label">SCIKIT-LEARN</span>
+                <span class="eng-progress-value">85% Proficiency</span>
+              </div>
+              <div class="eng-progress-bar-track">
+                <div class="eng-progress-bar-fill" style="width: 85%"></div>
+              </div>
+            </div>
+
+            <div class="eng-progress-item">
+              <div class="eng-progress-info">
+                <span class="eng-progress-label">DEEP LEARNING / LSTM</span>
+                <span class="eng-progress-value">80% Proficiency</span>
+              </div>
+              <div class="eng-progress-bar-track">
+                <div class="eng-progress-bar-fill" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Library Matrix Grid -->
+        <div class="eng-skills-card reveal reveal-delay-1">
+          <div class="eng-box-header">
+            <span class="eng-box-title">⚙ LIBRARY_MATRIX</span>
+          </div>
+          <div class="eng-skills-body grid">
+            <div class="eng-matrix-cell">
+              <span class="cell-icon">🐼</span>
+              <span class="cell-name">Pandas</span>
+            </div>
+            <div class="eng-matrix-cell">
+              <span class="cell-icon">🔢</span>
+              <span class="cell-name">NumPy</span>
+            </div>
+            <div class="eng-matrix-cell">
+              <span class="cell-icon">🚀</span>
+              <span class="cell-name">XGBoost</span>
+            </div>
+            <div class="eng-matrix-cell">
+              <span class="cell-icon">💡</span>
+              <span class="cell-name">LightGBM</span>
+            </div>
+            <div class="eng-matrix-cell">
+              <span class="cell-icon">🎯</span>
+              <span class="cell-name">Optuna</span>
+            </div>
+            <div class="eng-matrix-cell">
+              <span class="cell-icon">📊</span>
+              <span class="cell-name">Seaborn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- PORTFOLIO PROJECTS GRID -->
+  <section id="projects">
+    <!-- CREATIVE MODE SELECTED VIDEO WORKS -->
+    <div class="section-inner creative-only">
+      <div class="creative-video-header">
+        <span class="creative-pretitle">Selected Works</span>
+        <h2 class="creative-main-title">Video Projects</h2>
+      </div>
+
+      <div class="creative-video-list reveal">
+        <!-- Row 1 -->
+        <a href="https://www.instagram.com/reel/DKtqcpmTwTV/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">01</span>
+          <span class="video-row-title">IEEE Tenure Start Reel</span>
+          <span class="video-row-category">Event Coverage</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 2 -->
+        <a href="https://www.instagram.com/reel/DKtq67VzSV7/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">02</span>
+          <span class="video-row-title">Datathon 2024 Trailer</span>
+          <span class="video-row-category">Promotional Trailer</span>
+          <span class="video-row-rating">●●●○</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 3 -->
+        <a href="https://www.instagram.com/reel/DKtrLYBz-fi/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">03</span>
+          <span class="video-row-title">Datathon 2024 Aftermovie</span>
+          <span class="video-row-category">Event Aftermovie</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 4 -->
+        <a href="https://www.instagram.com/reel/DKtuJWczeMs/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">04</span>
+          <span class="video-row-title">HackX Event Reel</span>
+          <span class="video-row-category">Hackathon Coverage</span>
+          <span class="video-row-rating">●●●○</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 5 -->
+        <a href="https://www.instagram.com/reel/DKuOo8ez5u_/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">05</span>
+          <span class="video-row-title">IEEE Summit Reel</span>
+          <span class="video-row-category">Summit Highlights</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 6 -->
+        <a href="https://www.instagram.com/reel/DKuPBaVTx7b/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">06</span>
+          <span class="video-row-title">2024 Recap Reel</span>
+          <span class="video-row-category">Cinematic Compilation</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 7 -->
+        <a href="https://www.instagram.com/reel/DKvzwHAzqXg/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">07</span>
+          <span class="video-row-title">2025 Starts With a Banger Reel</span>
+          <span class="video-row-category">Cinematography Edit</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 8 -->
+        <a href="https://www.instagram.com/reel/DKv1w5XTb5P/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">08</span>
+          <span class="video-row-title">Day 2 Ono Reel</span>
+          <span class="video-row-category">Live Event Coverage</span>
+          <span class="video-row-rating">●●●○</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 9 -->
+        <a href="https://www.instagram.com/reel/DKv2OvWzxjh/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">09</span>
+          <span class="video-row-title">End of IEEE CS MUJ Tenure Reel</span>
+          <span class="video-row-category">Farewell Recap</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 10 -->
+        <a href="https://www.instagram.com/reel/DK8nd6II6nv/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">10</span>
+          <span class="video-row-title">Gully Gang Edit</span>
+          <span class="video-row-category">Music Video Sync</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+
+        <!-- Row 11 -->
+        <a href="https://www.instagram.com/reel/DXiOybgk-w3/?utm_source=chatgpt.com" target="_blank" class="video-list-row">
+          <span class="video-row-num">11</span>
+          <span class="video-row-title">One Last Edit Reel</span>
+          <span class="video-row-category">Cinematic Portfolio</span>
+          <span class="video-row-rating">●●●●</span>
+          <span class="video-row-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ENGINEERING MODE PROJECTS -->
+    <div class="section-inner eng-only">
+      <h2 class="eng-section-header">ENGINEERING_PROJECTS</h2>
+      
+      <div class="eng-projects-grid">
+        <!-- FEATURED CARD -->
+        <div class="eng-project-card featured reveal">
+          <div class="eng-box-header">
+            <span class="eng-box-title">[ FEATURED ]</span>
+          </div>
+          <div class="eng-project-body">
+            <h3 class="eng-project-title">Short-Term Electricity Load Forecasting</h3>
+            <p class="eng-project-desc">
+              A comprehensive research project benchmarking ML/DL models for electricity demand forecasting in Delhi. Demonstrated that optimized classical models can outperform expensive deep learning on tabular data.
+            </p>
+            <div class="eng-project-tags">
+              <span class="eng-tag">[ PYTHON ]</span>
+              <span class="eng-tag">[ SCIKIT-LEARN ]</span>
+              <span class="eng-tag">[ XGBOOST ]</span>
+              <span class="eng-tag">[ LIGHTGBM ]</span>
+              <span class="eng-tag">[ LSTM ]</span>
+              <span class="eng-tag">[ OPTUNA ]</span>
+            </div>
+            <a href="https://github.com/AgrimJain-quantum/my-first-project" target="_blank" class="eng-project-link">ACCESS_SYSTEM ↗</a>
+          </div>
+        </div>
+
+        <div class="eng-sub-projects">
+          <!-- CARD 02 -->
+          <div class="eng-project-card reveal reveal-delay-1">
+            <div class="eng-box-header">
+              <span class="eng-box-title">[ 02 ]</span>
+            </div>
+            <div class="eng-project-body">
+              <h3 class="eng-project-title">Multi-Dataset Power Forecasting System</h3>
+              <p class="eng-project-desc">
+                A comparative study benchmarking LSTM, GRU, XGBoost, and Random Forest models across diverse power grids (Delhi and UK national demand datasets).
+              </p>
+              <div class="eng-project-tags">
+                <span class="eng-tag">[ PYTHON ]</span>
+                <span class="eng-tag">[ TENSORFLOW ]</span>
+                <span class="eng-tag">[ XGBOOST ]</span>
+                <span class="eng-tag">[ SCIPY ]</span>
+              </div>
+              <a href="https://github.com/AgrimJain-quantum/my-second-project" target="_blank" class="eng-project-link">ACCESS_SYSTEM ↗</a>
+            </div>
+          </div>
+
+          <!-- CARD 03 -->
+          <div class="eng-project-card reveal reveal-delay-2">
+            <div class="eng-box-header">
+              <span class="eng-box-title">[ 03 ]</span>
+            </div>
+            <div class="eng-project-body">
+              <h3 class="eng-project-title">Audio Feature Music Recommendation Engine</h3>
+              <p class="eng-project-desc">
+                Content-based recommendation system parsing Spotify-like audio attributes with StandardScaler normalization and Cosine Similarity.
+              </p>
+              <div class="eng-project-tags">
+                <span class="eng-tag">[ PYTHON ]</span>
+                <span class="eng-tag">[ SCIKIT-LEARN ]</span>
+                <span class="eng-tag">[ STREAMLIT ]</span>
+                <span class="eng-tag">[ COSINE-SIMILARITY ]</span>
+              </div>
+              <a href="https://github.com/AgrimJain-quantum" target="_blank" class="eng-project-link">ACCESS_SYSTEM ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- CREATIVE PHOTO GALLERY (visible only in mode-creative) -->
+  <section id="creative-gallery" class="creative-only">
+    <div class="section-inner">
+      <div class="creative-gallery-header">
+        <span class="creative-pretitle">Visual Journal</span>
+        <h2 class="creative-main-title">Gallery Highlights</h2>
+      </div>
+      
+      <div class="gallery-collage-grid reveal">
+        <!-- Photo 1 -->
+        <div class="gallery-item" data-index="0">
+          <img src="images/photo1.jpg" alt="NCC Cadet">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">NCC Cadet</span>
+          </div>
+        </div>
+
+        <!-- Photo 2 -->
+        <div class="gallery-item" data-index="1">
+          <img src="images/photo2.jpg" alt="Keynote Speaker">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Keynote Speaker</span>
+          </div>
+        </div>
+
+        <!-- Photo 3 -->
+        <div class="gallery-item" data-index="2">
+          <img src="images/photo3.jpg" alt="Cultural Walk">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Cultural Walk</span>
+          </div>
+        </div>
+
+        <!-- Photo 4 -->
+        <div class="gallery-item" data-index="3">
+          <img src="images/photo4.jpg" alt="Salute & Honor">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Salute & Honor</span>
+          </div>
+        </div>
+
+        <!-- Photo 5 -->
+        <div class="gallery-item" data-index="4">
+          <img src="images/photo5.jpg" alt="Shuttle Perspectivism">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Shuttle Perspectivism</span>
+          </div>
+        </div>
+
+        <!-- Photo 6 -->
+        <div class="gallery-item" data-index="5">
+          <img src="images/photo6.jpg" alt="Stage Intensity">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Stage Intensity</span>
+          </div>
+        </div>
+
+        <!-- Photo 7 -->
+        <div class="gallery-item" data-index="6">
+          <img src="images/photo7.jpg" alt="Joy Portrait">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Joy Portrait</span>
+          </div>
+        </div>
+
+        <!-- Photo 8 -->
+        <div class="gallery-item" data-index="7">
+          <img src="images/photo8.jpg" alt="Vocal Capture">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Vocal Capture</span>
+          </div>
+        </div>
+
+        <!-- Photo 9 -->
+        <div class="gallery-item" data-index="8">
+          <img src="images/photo9.jpg" alt="Portrait Light">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Portrait Light</span>
+          </div>
+        </div>
+
+        <!-- Photo 10 -->
+        <div class="gallery-item" data-index="9">
+          <img src="images/photo10.jpg" alt="Vocal Focus">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Vocal Focus</span>
+          </div>
+        </div>
+
+        <!-- Photo 11 -->
+        <div class="gallery-item" data-index="10">
+          <img src="images/photo11.jpg" alt="Speaker Angle">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Speaker Angle</span>
+          </div>
+        </div>
+
+        <!-- Photo 12 -->
+        <div class="gallery-item" data-index="11">
+          <img src="images/photo12.jpg" alt="Concert Landscape">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Concert Landscape</span>
+          </div>
+        </div>
+
+        <!-- Photo 13 -->
+        <div class="gallery-item" data-index="12">
+          <img src="images/photo13.jpg" alt="Elysium Highlights">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Elysium Highlights</span>
+          </div>
+        </div>
+
+        <!-- Photo 14 -->
+        <div class="gallery-item" data-index="13">
+          <img src="images/photo14.jpg" alt="Concert Crowd">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Concert Crowd</span>
+          </div>
+        </div>
+
+        <!-- Photo 15 -->
+        <div class="gallery-item" data-index="14">
+          <img src="images/photo15.jpg" alt="Committee Group">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Committee Group</span>
+          </div>
+        </div>
+
+        <!-- Photo 16 -->
+        <div class="gallery-item" data-index="15">
+          <img src="images/photo16.jpg" alt="Concert Light Stage">
+          <div class="gallery-item-overlay">
+            <span class="gallery-category-tag">Concert Light Stage</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Lightbox Modal -->
+  <div class="gallery-lightbox" id="gallery-lightbox">
+    <span class="lightbox-close" id="lightbox-close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img" src="" alt="">
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+    <div class="lightbox-nav-btn prev" id="lightbox-prev">&#10094;</div>
+    <div class="lightbox-nav-btn next" id="lightbox-next">&#10095;</div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- CONTACT PORTAL -->
+  <section id="contact">
+    <!-- CREATIVE MODE CONTACT -->
+    <div class="section-inner contact-grid creative-only">
+      <div class="contact-info reveal">
+        <div class="section-label">Connect</div>
+        <h3>Let's collaborate on your next project</h3>
+        <p>
+          Whether you need a custom machine learning model optimized, neural forecasting models researched, or a cinematic visual trailer shot, edited, and directed—I'm open for collaboration. Let's build something amazing together.
+        </p>
+        
+        <div class="contact-links-grid">
+          <!-- Email link card -->
+          <a href="mailto:agrimjain015@gmail.com" class="contact-card-link">
+            <div class="contact-card-icon">✉</div>
+            <div class="contact-card-text">
+              <span class="contact-card-label">Email Address</span>
+              <span class="contact-card-value">agrimjain015@gmail.com</span>
+            </div>
+          </a>
+          
+          <!-- GitHub link card -->
+          <a href="https://github.com/AgrimJain-quantum" target="_blank" class="contact-card-link">
+            <div class="contact-card-icon">⚙</div>
+            <div class="contact-card-text">
+              <span class="contact-card-label">GitHub Workspace</span>
+              <span class="contact-card-value">AgrimJain-quantum</span>
+            </div>
+          </a>
+          
+          <!-- LinkedIn link card -->
+          <a href="https://www.linkedin.com/in/agrim-jain-8a8b58367/" target="_blank" class="contact-card-link">
+            <div class="contact-card-icon">in</div>
+            <div class="contact-card-text">
+              <span class="contact-card-label">LinkedIn profile</span>
+              <span class="contact-card-value">agrim-jain-8a8b58367</span>
+            </div>
+          </a>
+          
+          <!-- Instagram link card -->
+          <a href="https://www.instagram.com/optimus_mp4/" target="_blank" class="contact-card-link">
+            <div class="contact-card-icon">📸</div>
+            <div class="contact-card-text">
+              <span class="contact-card-label">Instagram profile</span>
+              <span class="contact-card-value">@optimus_mp4</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Premium interactive Form panel -->
+      <div class="glass-card reveal reveal-delay-2" style="height: 100%;">
+        <form style="display: flex; flex-direction: column; gap: 1.5rem;" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
+          <h3 style="font-family: var(--font-display); font-weight: 800; font-size: 1.25rem;">Send a direct message</h3>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Name</label>
+            <input type="text" placeholder="John Doe" required style="background: rgba(var(--text-rgb), 0.03); border: 1px solid var(--glass-border); padding: 0.8rem 1rem; border-radius: var(--border-radius); color: var(--text); font-family: var(--font-primary); font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--glass-border)'">
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Email</label>
+            <input type="email" placeholder="john@example.com" required style="background: rgba(var(--text-rgb), 0.03); border: 1px solid var(--glass-border); padding: 0.8rem 1rem; border-radius: var(--border-radius); color: var(--text); font-family: var(--font-primary); font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--glass-border)'">
+          </div>
+          
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            <label style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Message</label>
+            <textarea placeholder="Hi Agrim, I would love to collaborate on..." rows="4" required style="background: rgba(var(--text-rgb), 0.03); border: 1px solid var(--glass-border); padding: 0.8rem 1rem; border-radius: var(--border-radius); color: var(--text); font-family: var(--font-primary); font-size: 0.9rem; outline: none; transition: border-color 0.2s; resize: none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--glass-border)'"></textarea>
+          </div>
+          
+          <button type="submit" class="btn btn-primary" style="justify-content: center; width: 100%; margin-top: 0.5rem;">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ENGINEERING MODE CONTACT -->
+    <div class="section-inner eng-only">
+      <h2 class="eng-section-header">SYSTEM_SPECIFICATIONS_&_COMMS</h2>
+      
+      <div class="eng-contact-layout">
+        <!-- System info / links -->
+        <div class="eng-contact-info reveal">
+          <div class="eng-box-header">
+            <span class="eng-box-title">SYSTEM_COMMS_LINKS</span>
+          </div>
+          <div class="eng-contact-body">
+            <p class="eng-comms-desc">Establish secure socket connection with core architect.</p>
+            <div class="eng-comms-list">
+              <a href="mailto:agrimjain015@gmail.com" class="eng-comms-link">
+                <span class="link-label">MAIL::</span>agrimjain015@gmail.com
+              </a>
+              <a href="https://github.com/AgrimJain-quantum" target="_blank" class="eng-comms-link">
+                <span class="link-label">GITHUB::</span>AgrimJain-quantum
+              </a>
+              <a href="https://www.linkedin.com/in/agrim-jain-8a8b58367/" target="_blank" class="eng-comms-link">
+                <span class="link-label">LINKEDIN::</span>agrim-jain-8a8b58367
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input transmission form -->
+        <div class="eng-contact-form-panel reveal reveal-delay-1">
+          <div class="eng-box-header">
+            <span class="eng-box-title">TRANSMIT_INPUT_SIGNAL</span>
+          </div>
+          <div class="eng-form-body">
+            <form onsubmit="event.preventDefault(); alert('Transmission Successful!');">
+              <div class="eng-form-group">
+                <label>SENDER_IDENTITY:</label>
+                <input type="text" placeholder="name / organization" required>
+              </div>
+              <div class="eng-form-group">
+                <label>RETURN_SOCKET:</label>
+                <input type="email" placeholder="email address" required>
+              </div>
+              <div class="eng-form-group">
+                <label>MESSAGE_PAYLOAD:</label>
+                <textarea placeholder="enter telemetry / text signal..." rows="4" required></textarea>
+              </div>
+              <button type="submit" class="eng-btn-primary">TRANSMIT_SIGNAL</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Built with intent &amp; absolute precision &nbsp;·&nbsp; <span>Agrim Jain</span> &nbsp;·&nbsp; <span id="year"></span></p>
+  </footer>
+
+  <script src="index.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

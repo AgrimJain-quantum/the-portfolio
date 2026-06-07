@@ -791,7 +791,7 @@
   <!-- CONTACT PORTAL -->
   <section id="contact">
     <!-- CREATIVE MODE CONTACT -->
-    <div class="section-inner contact-grid creative-only">
+    <div class="section-inner creative-only">
       <div class="contact-info reveal">
         <div class="section-label">Connect</div>
         <h3>Let's collaborate on your next project</h3>
@@ -837,32 +837,6 @@
           </a>
         </div>
       </div>
-      
-      <!-- Premium interactive Form panel -->
-      <div class="glass-card reveal reveal-delay-2" style="height: 100%;">
-        <form style="display: flex; flex-direction: column; gap: 1.5rem;" onsubmit="event.preventDefault(); alert('Message sent successfully!');">
-          <h3 style="font-family: var(--font-display); font-weight: 800; font-size: 1.25rem;">Send a direct message</h3>
-          
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Name</label>
-            <input type="text" placeholder="John Doe" required style="background: rgba(var(--text-rgb), 0.03); border: 1px solid var(--glass-border); padding: 0.8rem 1rem; border-radius: var(--border-radius); color: var(--text); font-family: var(--font-primary); font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--glass-border)'">
-          </div>
-          
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Email</label>
-            <input type="email" placeholder="john@example.com" required style="background: rgba(var(--text-rgb), 0.03); border: 1px solid var(--glass-border); padding: 0.8rem 1rem; border-radius: var(--border-radius); color: var(--text); font-family: var(--font-primary); font-size: 0.9rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--glass-border)'">
-          </div>
-          
-          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-            <label style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;">Message</label>
-            <textarea placeholder="Hi Agrim, I would love to collaborate on..." rows="4" required style="background: rgba(var(--text-rgb), 0.03); border: 1px solid var(--glass-border); padding: 0.8rem 1rem; border-radius: var(--border-radius); color: var(--text); font-family: var(--font-primary); font-size: 0.9rem; outline: none; transition: border-color 0.2s; resize: none;" onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--glass-border)'"></textarea>
-          </div>
-          
-          <button type="submit" class="btn btn-primary" style="justify-content: center; width: 100%; margin-top: 0.5rem;">
-            Send Message
-          </button>
-        </form>
-      </div>
     </div>
 
     <!-- ENGINEERING MODE CONTACT -->
@@ -887,31 +861,10 @@
               <a href="https://www.linkedin.com/in/agrim-jain-8a8b58367/" target="_blank" class="eng-comms-link">
                 <span class="link-label">LINKEDIN::</span>agrim-jain-8a8b58367
               </a>
+              <a href="https://www.instagram.com/optimus_mp4/" target="_blank" class="eng-comms-link">
+                <span class="link-label">INSTAGRAM::</span>@optimus_mp4
+              </a>
             </div>
-          </div>
-        </div>
-
-        <!-- Input transmission form -->
-        <div class="eng-contact-form-panel reveal reveal-delay-1">
-          <div class="eng-box-header">
-            <span class="eng-box-title">TRANSMIT_INPUT_SIGNAL</span>
-          </div>
-          <div class="eng-form-body">
-            <form onsubmit="event.preventDefault(); alert('Transmission Successful!');">
-              <div class="eng-form-group">
-                <label>SENDER_IDENTITY:</label>
-                <input type="text" placeholder="name / organization" required>
-              </div>
-              <div class="eng-form-group">
-                <label>RETURN_SOCKET:</label>
-                <input type="email" placeholder="email address" required>
-              </div>
-              <div class="eng-form-group">
-                <label>MESSAGE_PAYLOAD:</label>
-                <textarea placeholder="enter telemetry / text signal..." rows="4" required></textarea>
-              </div>
-              <button type="submit" class="eng-btn-primary">TRANSMIT_SIGNAL</button>
-            </form>
           </div>
         </div>
       </div>

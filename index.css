@@ -627,6 +627,7 @@ body.gateway-active {
   letter-spacing: 0.02em;
   margin-bottom: 2.2rem;
   line-height: 1.5;
+  white-space: normal;
 }
 
 .split-sub-cr {
@@ -635,6 +636,7 @@ body.gateway-active {
   color: #66666a;
   margin-bottom: 2.2rem;
   line-height: 1.6;
+  white-space: normal;
 }
 
 /* Custom Gateway Buttons */

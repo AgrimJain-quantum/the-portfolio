@@ -3026,3 +3026,785 @@ body.mode-engineering .lightbox-nav-btn {
 #eng-dashboard-wrapper .border-all-thick { border: 4px solid white; }
 
 
+/* ================================================================
+   ENGINEERING MODE — Legacy HTML Class Styles
+   Covers: topbar, sidebar, terminal boxes, about, skills,
+           projects, contact sections used in index.html
+   ================================================================ */
+
+/* ── ENGINEERING TOPBAR ── */
+#eng-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: #000000;
+  border-bottom: 1px solid #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 1002;
+  font-family: var(--font-mono);
+}
+
+.eng-topbar-btn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #888;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.eng-topbar-btn:hover {
+  color: #fff;
+  border-color: #fff;
+  background: #111;
+}
+
+.eng-icon {
+  font-size: 0.85rem;
+}
+
+.eng-topbar-title {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+}
+
+.eng-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.eng-topbar-icon {
+  color: #666;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.eng-topbar-icon:hover {
+  color: #fff;
+}
+
+.status-indicator {
+  animation: pulse-status 2s ease-in-out infinite;
+}
+
+@keyframes pulse-status {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ── ENGINEERING SIDEBAR ── */
+aside#eng-sidebar {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 200px;
+  height: calc(100vh - 48px);
+  background: #000000;
+  border-right: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+  overflow-y: auto;
+}
+
+.eng-sidebar-header {
+  padding: 1.5rem 1.25rem 1rem;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.eng-sidebar-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.25rem;
+}
+
+.eng-sidebar-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: #555;
+  letter-spacing: 0.1em;
+}
+
+.eng-sidebar-menu {
+  list-style: none;
+  padding: 0.75rem 0;
+  flex: 1;
+}
+
+.eng-sidebar-menu li {
+  margin: 0;
+}
+
+.eng-sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #666;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.eng-sidebar-menu li a:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+  border-left-color: #444;
+}
+
+.eng-sidebar-menu li.active a {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border-left-color: #ffffff;
+}
+
+.eng-menu-icon {
+  font-size: 0.75rem;
+  width: 16px;
+  text-align: center;
+  color: inherit;
+}
+
+.eng-sidebar-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #1a1a1a;
+  margin-top: auto;
+}
+
+.eng-user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.eng-user-avatar {
+  width: 36px;
+  height: 36px;
+  background: #ffffff;
+  color: #000000;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.eng-user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow: hidden;
+}
+
+.eng-user-name {
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.eng-user-role {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  color: #555;
+  letter-spacing: 0.06em;
+}
+
+/* ── ENGINEERING MAIN CONTENT OFFSET ── */
+body.mode-engineering nav#navbar {
+  display: none !important;
+}
+
+body.mode-engineering section {
+  margin-left: 200px;
+  padding-top: 80px;
+}
+
+body.mode-engineering .section-inner.eng-only {
+  max-width: 1100px;
+}
+
+body.mode-engineering footer {
+  margin-left: 200px;
+}
+
+body.mode-engineering .section-divider {
+  margin-left: 200px;
+  max-width: calc(1200px);
+}
+
+/* ── TERMINAL BOX (System Identity, etc.) ── */
+.eng-terminal-box {
+  background: #000000;
+  border: 1px solid #1e1e1e;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+}
+
+.eng-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 1.25rem;
+  background: #050505;
+  border-bottom: 1px solid #1e1e1e;
+  gap: 0.75rem;
+}
+
+.eng-box-header.mini {
+  padding: 0.5rem 1.25rem;
+}
+
+.eng-box-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.eng-box-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #333;
+  display: block;
+}
+
+.eng-box-dots span:first-child { background: #ff5f57; }
+.eng-box-dots span:nth-child(2) { background: #ffbd2e; }
+.eng-box-dots span:nth-child(3) { background: #28c840; }
+
+.eng-box-title {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.06em;
+  flex: 1;
+}
+
+.eng-box-meta {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: #666;
+  letter-spacing: 0.04em;
+}
+
+.eng-box-body {
+  padding: 1.5rem 1.25rem;
+}
+
+.eng-box-body p {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.8;
+  color: #aaa;
+  margin-bottom: 0.5rem;
+}
+
+.eng-label {
+  color: #ffffff;
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+/* Terminal prompt */
+.eng-terminal-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #1a1a1a;
+}
+
+.prompt-user {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #28c840;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.prompt-input {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #ffffff;
+  background: transparent;
+  border: none;
+  outline: none;
+  flex: 1;
+  caret-color: #fff;
+}
+
+/* ── ABOUT SECTION (Engineering) ── */
+.eng-about-layout {
+  display: grid;
+  grid-template-columns: 0.4fr 0.6fr;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.eng-architect-panel {
+  background: #000;
+  border: 1px solid #1e1e1e;
+  overflow: hidden;
+}
+
+.eng-architect-body {
+  padding: 1.25rem;
+}
+
+.eng-avatar-monitor {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  border: 1px solid #1a1a1a;
+  background: #050505;
+}
+
+.scanline-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1);
+  transition: filter 0.4s ease;
+}
+
+.eng-architect-panel:hover .scanline-img {
+  filter: grayscale(0%) contrast(1);
+}
+
+.monitor-glare {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.04) 0%,
+    transparent 50%,
+    rgba(255,255,255,0.02) 100%
+  );
+  pointer-events: none;
+}
+
+.eng-avatar-monitor::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+  animation: scanline-drift 8s linear infinite;
+}
+
+@keyframes scanline-drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(20px); }
+}
+
+.eng-architect-meta p {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #888;
+  margin-bottom: 0.35rem;
+  line-height: 1.5;
+}
+
+.eng-architect-meta p span {
+  color: #ffffff;
+  font-weight: 700;
+  margin-right: 0.25rem;
+}
+
+/* Bio panel */
+.eng-bio-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.eng-section-header {
+  font-family: var(--font-primary);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.eng-bio-text {
+  margin-bottom: 1.5rem;
+}
+
+.eng-bio-text p {
+  font-family: var(--font-primary);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.eng-bio-text p:last-child {
+  margin-bottom: 0;
+}
+
+.eng-quote {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #ffffff;
+  border-left: 3px solid #ffffff;
+  padding: 1rem 1.25rem;
+  background: #050505;
+  line-height: 1.6;
+  margin-top: auto;
+  font-style: italic;
+}
+
+/* ── SKILLS SECTION (Engineering) ── */
+.eng-skills-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-top: 1rem;
+}
+
+.eng-skills-card {
+  background: #000;
+  border: 1px solid #1e1e1e;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+.eng-skills-card:hover {
+  border-color: #333;
+}
+
+.eng-skills-body {
+  padding: 1.5rem 1.25rem;
+}
+
+.eng-skills-body.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* Progress bars */
+.eng-progress-item {
+  margin-bottom: 1.25rem;
+}
+
+.eng-progress-item:last-child {
+  margin-bottom: 0;
+}
+
+.eng-progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.eng-progress-label {
+  font-family: var(--font-primary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.02em;
+}
+
+.eng-progress-value {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: #666;
+}
+
+.eng-progress-bar-track {
+  height: 3px;
+  background: #111;
+  width: 100%;
+}
+
+.eng-progress-bar-fill {
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255,255,255,0.3);
+  transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Library Matrix */
+.eng-matrix-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  border: 1px solid #111;
+  background: #050505;
+  text-align: center;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  cursor: default;
+}
+
+.eng-matrix-cell:hover {
+  border-color: #444;
+  transform: translateY(-2px);
+}
+
+.cell-icon {
+  font-size: 1.4rem;
+}
+
+.cell-name {
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+/* ── PROJECTS SECTION (Engineering) ── */
+.eng-projects-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.eng-project-card {
+  background: #000;
+  border: 1px solid #1e1e1e;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.eng-project-card:hover {
+  border-color: #444;
+}
+
+.eng-project-card.featured {
+  border-color: #333;
+}
+
+.eng-project-card.featured .eng-box-header {
+  background: #0a0a0a;
+  border-bottom-color: #333;
+}
+
+.eng-project-body {
+  padding: 1.75rem 1.5rem;
+}
+
+.eng-project-title {
+  font-family: var(--font-primary);
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.eng-project-desc {
+  font-family: var(--font-primary);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: #888;
+  margin-bottom: 1.25rem;
+  max-width: 700px;
+}
+
+.eng-project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.eng-tag {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: #666;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #1a1a1a;
+  background: #050505;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.eng-tag:hover {
+  border-color: #555;
+  color: #fff;
+}
+
+.eng-project-link {
+  font-family: var(--font-primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  border: 1px solid #1e1e1e;
+  padding: 0.6rem 1.25rem;
+  display: inline-block;
+  transition: all 0.2s ease;
+  letter-spacing: 0.04em;
+}
+
+.eng-project-link:hover {
+  background: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.eng-sub-projects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* ── CONTACT SECTION (Engineering) ── */
+.eng-contact-layout {
+  margin-top: 1rem;
+}
+
+.eng-contact-info {
+  background: #000;
+  border: 1px solid #1e1e1e;
+  overflow: hidden;
+  max-width: 700px;
+}
+
+.eng-contact-body {
+  padding: 1.5rem 1.25rem;
+}
+
+.eng-comms-desc {
+  font-family: var(--font-primary);
+  font-size: 0.82rem;
+  color: #888;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.eng-comms-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.eng-comms-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid #111;
+  background: #050505;
+  transition: all 0.2s ease;
+}
+
+.eng-comms-link:hover {
+  border-color: #fff;
+  background: #fff;
+  color: #000;
+}
+
+.eng-comms-link:hover .link-label {
+  color: #000;
+}
+
+.link-label {
+  font-weight: 700;
+  color: #666;
+  margin-right: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+/* ── RESPONSIVE OVERRIDES (Engineering Legacy) ── */
+@media (max-width: 1024px) {
+  .eng-about-layout {
+    grid-template-columns: 1fr;
+  }
+  .eng-skills-layout {
+    grid-template-columns: 1fr;
+  }
+  .eng-sub-projects {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  aside#eng-sidebar {
+    width: 0;
+    overflow: hidden;
+    border: none;
+  }
+  body.mode-engineering section {
+    margin-left: 0;
+    padding-top: 70px;
+  }
+  body.mode-engineering footer {
+    margin-left: 0;
+  }
+  body.mode-engineering .section-divider {
+    margin-left: 0;
+  }
+  #eng-topbar {
+    padding: 0 1rem;
+  }
+  .eng-topbar-title {
+    display: none;
+  }
+  .eng-about-layout {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .eng-skills-layout {
+    grid-template-columns: 1fr;
+  }
+  .eng-skills-body.grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .eng-sub-projects {
+    grid-template-columns: 1fr;
+  }
+}
+

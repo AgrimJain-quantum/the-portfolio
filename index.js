@@ -29,8 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Engineering specific elements
   const engBackGateway = document.getElementById('eng-back-gateway');
   const engSidebar = document.getElementById('eng-sidebar');
-  const statusIndicator = document.querySelector('.status-indicator');
-  const engSidebarLinks = document.querySelectorAll('.eng-sidebar-menu a');
+  const engExitBtn = document.getElementById('eng-exit-btn');
+  const engHeaderSubtitle = document.getElementById('eng-header-subtitle');
+  const establishSocketBtn = document.getElementById('establish-socket-btn');
 
   // --- State Variables ---
   let mouseX = 0, mouseY = 0;
@@ -133,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('portfolio-mode', 'engineering');
       updateSlider('engineering');
       filterGridByMode('engineering');
+      setTimeout(initEngineeringDashboard, 50);
     }
     // Reinitialize canvas dimensions & arrays
     initCanvas();
@@ -299,34 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         p.draw('engineering'); // draw as engineering nodes
       });
     } else if (activeMode === 'engineering') {
-      // Fade trail backdrop
-      ctx.fillStyle = 'rgba(2, 0, 0, 0.08)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw matrix chars
-      ctx.font = '14px "DM Mono", monospace';
-      
-      for (let i = 0; i < drops.length; i++) {
-        const char = chars[Math.floor(Math.random() * chars.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
-        
-        // Random white glowing character at the leading edge
-        if (Math.random() > 0.98) {
-          ctx.fillStyle = '#ffffff';
-        } else {
-          ctx.fillStyle = 'rgba(255, 45, 45, 0.85)';
-        }
-        
-        ctx.fillText(char, x, y);
-        
-        // Reset drop
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        } else {
-          drops[i] += 0.85; // drop speed
-        }
-      }
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
     } else {
       // Creative mode — floating gradient blobs
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -378,9 +353,24 @@ document.addEventListener('DOMContentLoaded', () => {
   initCanvas();
   animateCanvas();
 
-  // Load Saved Preference
-  const savedMode = localStorage.getItem('portfolio-mode') || 'engineering';
+  // Load Saved Preference or parse URL query parameter to bypass gateway
+  const urlParams = new URLSearchParams(window.location.search);
+  const skipGateway = urlParams.get('gateway') === 'false';
+  
+  if (skipGateway) {
+    isGatewayActive = false;
+    if (heroSection) {
+      heroSection.classList.add('dismissed');
+      heroSection.style.display = 'none';
+    }
+    body.classList.remove('gateway-active');
+  }
+
+  const savedMode = skipGateway ? 'engineering' : (localStorage.getItem('portfolio-mode') || 'engineering');
   setMode(savedMode);
+  if (savedMode === 'engineering' && !isGatewayActive) {
+    setTimeout(initEngineeringDashboard, 100);
+  }
 
   // Navbar button toggles
   if (toggleEng) toggleEng.addEventListener('click', () => setMode('engineering'));
@@ -440,6 +430,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     heroSection.addEventListener('transitionend', () => {
       heroSection.style.display = 'none';
+      if (body.classList.contains('mode-engineering')) {
+        initEngineeringDashboard();
+      }
     }, { once: true });
     
     handleScroll();
@@ -461,7 +454,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (engBackGateway) {
-    engBackGateway.addEventListener('click', showGateway);
+    engBackGateway.addEventListener('click', (e) => {
+      e.preventDefault();
+      showGateway();
+    });
+  }
+  if (engExitBtn) {
+    engExitBtn.addEventListener('click', showGateway);
   }
 
   // Hero Intro Split choosing buttons
@@ -518,77 +517,276 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Engineering Mode Sidebar & Scroll Spy Operations ---
-  
-  // Sidebar scroll clicks
-  engSidebarLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = link.getAttribute('href');
-      const targetSection = document.querySelector(targetId);
+  // --- Engineering Mode Dashboard & Tab Control Logic ---
+
+  // Compact icon sidebar tab selectors
+  const sidebarTabs = document.querySelectorAll('#eng-sidebar nav button');
+  const tabPanels = document.querySelectorAll('.eng-tab-panel');
+
+  // Handle Tab Switching
+  sidebarTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetTab = tab.getAttribute('data-tab');
       
-      if (targetSection) {
-        // Scroll offset
-        const offset = window.innerWidth > 768 ? 80 : 70;
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = targetSection.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-        
-        // Hide sidebar drawer on mobile
-        if (engSidebar) engSidebar.classList.remove('open');
-      }
-    });
-  });
-
-  // Toggle mobile sidebar on crosshair click
-  if (statusIndicator) {
-    statusIndicator.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (engSidebar) {
-        engSidebar.classList.toggle('open');
-      }
-    });
-  }
-
-  // Click outside sidebar drawer on mobile closes it
-  document.addEventListener('click', (e) => {
-    if (engSidebar && engSidebar.classList.contains('open')) {
-      if (!engSidebar.contains(e.target) && !e.target.classList.contains('status-indicator')) {
-        engSidebar.classList.remove('open');
-      }
-    }
-  });
-
-  // Active section tracker (Scroll Spy)
-  const handleScrollSpy = () => {
-    const activeMode = body.classList.contains('mode-engineering') ? 'engineering' : 'creative';
-    if (activeMode !== 'engineering') return;
-
-    const sections = ['about', 'eng-about-details', 'skills', 'projects', 'contact'];
-    const scrollPos = window.scrollY + 130;
-
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) {
-        const top = el.offsetTop;
-        const height = el.offsetHeight;
-        if (scrollPos >= top && scrollPos < top + height) {
-          // Update active links
-          document.querySelectorAll('.eng-sidebar-menu li').forEach(li => li.classList.remove('active'));
-          const currentLink = document.querySelector(`.eng-sidebar-menu a[href="#${id}"]`);
-          if (currentLink) currentLink.parentElement.classList.add('active');
+      // Update active sidebar state
+      sidebarTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Update active tab panel state
+      tabPanels.forEach(panel => {
+        panel.classList.remove('active');
+        if (panel.getAttribute('id') === `eng-tab-${targetTab}`) {
+          panel.classList.add('active');
+        }
+      });
+      
+      // Dynamic Header Subtitle Update
+      if (engHeaderSubtitle) {
+        if (targetTab === 'dashboard') {
+          engHeaderSubtitle.textContent = 'ARCHITECT_PROFILE: AJ_01';
+          // Trigger progress bar fills and terminal logs
+          animateProgressBars();
+          runTerminalBootLogger();
+        } else if (targetTab === 'projects') {
+          engHeaderSubtitle.textContent = 'SESSION_ID: 0X9A2_FF';
         }
       }
     });
-  };
-  window.addEventListener('scroll', handleScrollSpy);
-  handleScrollSpy();
+  });
+
+  // --- Interactive Blueprint Canvas (Oscilloscope / Coordinate Graph) ---
+  const blueprintCanvas = document.getElementById('eng-blueprint-canvas');
+  const blueprintDisplay = document.getElementById('blueprint-coord-display');
+  let bpCtx = null;
+  let bpAnimationId = null;
+  let bpMouse = { x: null, y: null, active: false };
+  let bpWaveOffset = 0;
+
+  function initBlueprintCanvas() {
+    if (!blueprintCanvas) return;
+    bpCtx = blueprintCanvas.getContext('2d');
+    
+    const resizeBpCanvas = () => {
+      const parent = blueprintCanvas.parentElement;
+      blueprintCanvas.width = parent.clientWidth;
+      blueprintCanvas.height = parent.clientHeight;
+    };
+    
+    resizeBpCanvas();
+    window.addEventListener('resize', resizeBpCanvas);
+    
+    // Mouse Interaction Coords
+    const rectParent = blueprintCanvas.parentElement;
+    rectParent.addEventListener('mousemove', (e) => {
+      const rect = blueprintCanvas.getBoundingClientRect();
+      bpMouse.x = e.clientX - rect.left;
+      bpMouse.y = e.clientY - rect.top;
+      bpMouse.active = true;
+      
+      // Normalize values 0 to 1
+      const normX = Math.min(Math.max(bpMouse.x / blueprintCanvas.width, 0), 1).toFixed(3);
+      const normY = Math.min(Math.max((blueprintCanvas.height - bpMouse.y) / blueprintCanvas.height, 0), 1).toFixed(3);
+      if (blueprintDisplay) {
+        blueprintDisplay.textContent = `X: ${normX} / Y: ${normY}`;
+      }
+    });
+    
+    rectParent.addEventListener('mouseleave', () => {
+      bpMouse.active = false;
+      if (blueprintDisplay) {
+        blueprintDisplay.textContent = 'X: 0.000 / Y: 0.000';
+      }
+    });
+    
+    // Canvas Render Loop
+    function drawBlueprint() {
+      if (!blueprintCanvas || !bpCtx) return;
+      
+      const w = blueprintCanvas.width;
+      const h = blueprintCanvas.height;
+      
+      bpCtx.fillStyle = '#000000';
+      bpCtx.fillRect(0, 0, w, h);
+      
+      // 1. Draw Tech Grid lines
+      bpCtx.strokeStyle = '#0e0e0e';
+      bpCtx.lineWidth = 1;
+      const gridSize = 30;
+      for (let x = 0; x < w; x += gridSize) {
+        bpCtx.beginPath();
+        bpCtx.moveTo(x, 0);
+        bpCtx.lineTo(x, h);
+        bpCtx.stroke();
+      }
+      for (let y = 0; y < h; y += gridSize) {
+        bpCtx.beginPath();
+        bpCtx.moveTo(0, y);
+        bpCtx.lineTo(w, y);
+        bpCtx.stroke();
+      }
+      
+      // 2. Draw Scrolling Waves (oscilloscope sine wave)
+      bpCtx.lineWidth = 1.5;
+      
+      // Wave 1: Primary thin white wave
+      bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      bpCtx.beginPath();
+      for (let i = 0; i < w; i++) {
+        // Adjust frequency/amp based on mouse position
+        const freqMult = bpMouse.active ? 1 + (bpMouse.x / w) * 1.5 : 1;
+        const ampMult = bpMouse.active ? 0.7 + (1 - bpMouse.y / h) * 0.8 : 1;
+        
+        const y = h / 2 + Math.sin(i * 0.012 * freqMult + bpWaveOffset) * 35 * ampMult;
+        if (i === 0) bpCtx.moveTo(i, y);
+        else bpCtx.lineTo(i, y);
+      }
+      bpCtx.stroke();
+      
+      // Wave 2: Secondary out-of-phase grey wave
+      bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      bpCtx.beginPath();
+      for (let i = 0; i < w; i++) {
+        const freqMult = bpMouse.active ? 0.8 + (bpMouse.y / h) * 0.5 : 1;
+        const y = h / 2 + Math.sin(i * 0.007 * freqMult - bpWaveOffset * 0.7) * 22;
+        if (i === 0) bpCtx.moveTo(i, y);
+        else bpCtx.lineTo(i, y);
+      }
+      bpCtx.stroke();
+      
+      // 3. Draw crosshairs if mouse is inside blueprint area
+      if (bpMouse.active) {
+        bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        bpCtx.lineWidth = 0.5;
+        
+        // Horizontal Line
+        bpCtx.beginPath();
+        bpCtx.moveTo(0, bpMouse.y);
+        bpCtx.lineTo(w, bpMouse.y);
+        bpCtx.stroke();
+        
+        // Vertical Line
+        bpCtx.beginPath();
+        bpCtx.moveTo(bpMouse.x, 0);
+        bpCtx.lineTo(bpMouse.x, h);
+        bpCtx.stroke();
+        
+        // Glowing target dot
+        bpCtx.beginPath();
+        bpCtx.arc(bpMouse.x, bpMouse.y, 4, 0, Math.PI * 2);
+        bpCtx.fillStyle = '#ffffff';
+        bpCtx.shadowBlur = 10;
+        bpCtx.shadowColor = '#ffffff';
+        bpCtx.fill();
+        bpCtx.shadowBlur = 0; // reset glow shadow
+        
+        bpCtx.beginPath();
+        bpCtx.arc(bpMouse.x, bpMouse.y, 14, 0, Math.PI * 2);
+        bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        bpCtx.lineWidth = 1;
+        bpCtx.stroke();
+      }
+      
+      // Move offset
+      bpWaveOffset += 0.05;
+      bpAnimationId = requestAnimationFrame(drawBlueprint);
+    }
+    
+    // Stop previous loop if any
+    if (bpAnimationId) cancelAnimationFrame(bpAnimationId);
+    drawBlueprint();
+  }
+
+  // --- Skill progress bars animation ---
+  function animateProgressBars() {
+    const fills = document.querySelectorAll('.progress-bar-fill-tw');
+    fills.forEach(fill => {
+      let targetPct = fill.getAttribute('data-progress');
+      if (!targetPct) {
+        targetPct = fill.style.width || '0%';
+        fill.setAttribute('data-progress', targetPct);
+      }
+      fill.style.width = '0%'; // reset first
+      setTimeout(() => {
+        fill.style.width = targetPct;
+      }, 150);
+    });
+  }
+
+  // --- System Status Boot Log simulation ---
+  let isBooted = false;
+  function runTerminalBootLogger() {
+    const consoleBox = document.getElementById('eng-status-console');
+    if (!consoleBox) return;
+    if (isBooted) return; // run once
+    
+    consoleBox.innerHTML = '';
+    const bootLines = [
+      { text: "Establishing secure connection...", delay: 200 },
+      { text: "User ID: AGRIM_JAIN_01", delay: 650 },
+      { text: "Authorization: ARCHITECT", delay: 1100 },
+      { text: "Ready for deployment.", delay: 1550 }
+    ];
+    
+    bootLines.forEach(line => {
+      setTimeout(() => {
+        const lineDiv = document.createElement('div');
+        lineDiv.className = 'console-line';
+        lineDiv.innerHTML = `<span class="console-line-prompt">></span>${line.text}`;
+        consoleBox.appendChild(lineDiv);
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+      }, line.delay);
+    });
+    
+    isBooted = true;
+  }
+
+  // --- Establish Socket connection simulation (Tab 2) ---
+  if (establishSocketBtn) {
+    establishSocketBtn.addEventListener('click', () => {
+      const consoleLog = document.getElementById('socket-console-log');
+      const statusText = document.getElementById('socket-status-text');
+      if (!consoleLog || establishSocketBtn.classList.contains('connected-state')) return;
+      
+      establishSocketBtn.disabled = true;
+      establishSocketBtn.textContent = 'ESTABLISHING CONNECTION...';
+      
+      consoleLog.innerHTML = 'SYSTEM@AGRIM_ARCHIVE:~$ INITIALIZING HANDSHAKE... <span class="blink-cursor">█</span>';
+      
+      const handshakeLines = [
+        { text: "CONNECTING TO SOCKET_PORT: 8080...", delay: 800 },
+        { text: "SHAKING HANDS WITH OPERATOR...", delay: 1600 },
+        { text: "SECURE SOCKET ESTABLISHED.", delay: 2400 },
+        { text: "WELCOME BACK, ARCHITECT.", delay: 3000 }
+      ];
+      
+      handshakeLines.forEach(line => {
+        setTimeout(() => {
+          // Replace cursor, append log line, append cursor
+          const currentHTML = consoleLog.innerHTML;
+          const cleanHTML = currentHTML.replace('<span class="blink-cursor">█</span>', '');
+          consoleLog.innerHTML = `${cleanHTML}<br>SYSTEM@AGRIM_ARCHIVE:~$ ${line.text} <span class="blink-cursor">█</span>`;
+          consoleLog.scrollTop = consoleLog.scrollHeight;
+        }, line.delay);
+      });
+      
+      setTimeout(() => {
+        statusText.textContent = 'STATUS: [ CONNECTED ]';
+        statusText.style.color = '#55ff55';
+        statusText.style.fontWeight = 'bold';
+        
+        establishSocketBtn.textContent = 'SECURE CONNECTION LINK ACTIVE';
+        establishSocketBtn.classList.add('connected-state');
+        establishSocketBtn.disabled = true;
+      }, 3300);
+    });
+  }
+
+  // --- Unified dashboard initialization module ---
+  function initEngineeringDashboard() {
+    initBlueprintCanvas();
+    animateProgressBars();
+    runTerminalBootLogger();
+  }
 
   // --- Service Accordion Logic ---
   const accordionItems = document.querySelectorAll('.accordion-item');

@@ -28,10 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Engineering specific elements
   const engBackGateway = document.getElementById('eng-back-gateway');
-  const engSidebar = document.getElementById('eng-sidebar');
-  const engExitBtn = document.getElementById('eng-exit-btn');
-  const engHeaderSubtitle = document.getElementById('eng-header-subtitle');
-  const establishSocketBtn = document.getElementById('establish-socket-btn');
+  const engBackGatewayP2 = document.getElementById('eng-back-gateway-p2');
+  const engPageDashboard = document.getElementById('eng-page-dashboard');
+  const engPageArchive = document.getElementById('eng-page-archive');
 
   // --- State Variables ---
   let mouseX = 0, mouseY = 0;
@@ -188,6 +187,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Pre-render gradient blobs to offscreen canvases for performance
+  const offscreenCache = {};
+  function getOffscreenBlob(color) {
+    const key = `${color.r},${color.g},${color.b}`;
+    if (!offscreenCache[key]) {
+      const size = 600; // sufficiently large resolution
+      const offscreenCanvas = document.createElement('canvas');
+      offscreenCanvas.width = size;
+      offscreenCanvas.height = size;
+      const offCtx = offscreenCanvas.getContext('2d');
+      
+      const center = size / 2;
+      const grad = offCtx.createRadialGradient(center, center, 0, center, center, center);
+      grad.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 1)`);
+      grad.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, 0.4)`);
+      grad.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
+      
+      offCtx.beginPath();
+      offCtx.arc(center, center, center, 0, Math.PI * 2);
+      offCtx.fillStyle = grad;
+      offCtx.fill();
+      
+      offscreenCache[key] = offscreenCanvas;
+    }
+    return offscreenCache[key];
+  }
+
   // Creative Mode — Floating Gradient Blobs
   class CreativeBlob {
     constructor() {
@@ -234,16 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const r = this.radius * pulse;
       const alpha = this.baseAlpha * (0.7 + Math.sin(this.phase) * 0.3);
 
-      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, r);
-      const { r: cr, g: cg, b: cb } = this.color;
-      grad.addColorStop(0, `rgba(${cr}, ${cg}, ${cb}, ${alpha})`);
-      grad.addColorStop(0.5, `rgba(${cr}, ${cg}, ${cb}, ${alpha * 0.4})`);
-      grad.addColorStop(1, `rgba(${cr}, ${cg}, ${cb}, 0)`);
-
-      ctx.beginPath();
-      ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
-      ctx.fillStyle = grad;
-      ctx.fill();
+      const blobCanvas = getOffscreenBlob(this.color);
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(blobCanvas, this.x - r, this.y - r, r * 2, r * 2);
+      ctx.restore();
     }
   }
 
@@ -459,8 +480,11 @@ document.addEventListener('DOMContentLoaded', () => {
       showGateway();
     });
   }
-  if (engExitBtn) {
-    engExitBtn.addEventListener('click', showGateway);
+  if (engBackGatewayP2) {
+    engBackGatewayP2.addEventListener('click', (e) => {
+      e.preventDefault();
+      showGateway();
+    });
   }
 
   // Hero Intro Split choosing buttons
@@ -517,197 +541,90 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Engineering Mode Dashboard & Tab Control Logic ---
+  // --- Engineering Mode Dashboard & View Control Logic ---
 
-  // Compact icon sidebar tab selectors
-  const sidebarTabs = document.querySelectorAll('#eng-sidebar nav button');
-  const tabPanels = document.querySelectorAll('.eng-tab-panel');
+  const engNavDashboard = document.getElementById('eng-nav-dashboard');
+  const engNavProjects = document.getElementById('eng-nav-projects');
+  const engNavDashboardP2 = document.getElementById('eng-nav-dashboard-p2');
+  const engNavProjectsP2 = document.getElementById('eng-nav-projects-p2');
+  const engDashboardView = document.getElementById('eng-dashboard-view');
+  const engProjectsView = document.getElementById('eng-projects-view');
 
-  // Handle Tab Switching
-  sidebarTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const targetTab = tab.getAttribute('data-tab');
-      
-      // Update active sidebar state
-      sidebarTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      
-      // Update active tab panel state
-      tabPanels.forEach(panel => {
-        panel.classList.remove('active');
-        if (panel.getAttribute('id') === `eng-tab-${targetTab}`) {
-          panel.classList.add('active');
-        }
-      });
-      
-      // Dynamic Header Subtitle Update
-      if (engHeaderSubtitle) {
-        if (targetTab === 'dashboard') {
-          engHeaderSubtitle.textContent = 'ARCHITECT_PROFILE: AJ_01';
-          // Trigger progress bar fills and terminal logs
-          animateProgressBars();
-          runTerminalBootLogger();
-        } else if (targetTab === 'projects') {
-          engHeaderSubtitle.textContent = 'SESSION_ID: 0X9A2_FF';
-        }
-      }
-    });
-  });
+  const engNavActivePage1 = 'group w-full flex flex-col items-center py-3 text-primary border-r-2 border-primary bg-surface-container-highest transition-all duration-150';
+  const engNavIdlePage1 = 'group w-full flex flex-col items-center py-3 text-on-surface-variant opacity-60 hover:text-primary hover:bg-surface-variant transition-all duration-150';
+  const engNavActivePage2 = 'group w-full flex flex-col items-center py-3 text-primary border-r-2 border-primary bg-surface-container-highest transition-all duration-150';
+  const engNavIdlePage2 = 'group w-full flex flex-col items-center py-3 text-on-surface-variant opacity-60 hover:text-primary hover:bg-surface-variant transition-all duration-150';
 
-  // --- Interactive Blueprint Canvas (Oscilloscope / Coordinate Graph) ---
-  const blueprintCanvas = document.getElementById('eng-blueprint-canvas');
-  const blueprintDisplay = document.getElementById('blueprint-coord-display');
-  let bpCtx = null;
-  let bpAnimationId = null;
-  let bpMouse = { x: null, y: null, active: false };
-  let bpWaveOffset = 0;
+  function showDashboardView() {
+    if (!engPageDashboard || !engPageArchive) return;
 
-  function initBlueprintCanvas() {
-    if (!blueprintCanvas) return;
-    bpCtx = blueprintCanvas.getContext('2d');
-    
-    const resizeBpCanvas = () => {
-      const parent = blueprintCanvas.parentElement;
-      blueprintCanvas.width = parent.clientWidth;
-      blueprintCanvas.height = parent.clientHeight;
-    };
-    
-    resizeBpCanvas();
-    window.addEventListener('resize', resizeBpCanvas);
-    
-    // Mouse Interaction Coords
-    const rectParent = blueprintCanvas.parentElement;
-    rectParent.addEventListener('mousemove', (e) => {
-      const rect = blueprintCanvas.getBoundingClientRect();
-      bpMouse.x = e.clientX - rect.left;
-      bpMouse.y = e.clientY - rect.top;
-      bpMouse.active = true;
-      
-      // Normalize values 0 to 1
-      const normX = Math.min(Math.max(bpMouse.x / blueprintCanvas.width, 0), 1).toFixed(3);
-      const normY = Math.min(Math.max((blueprintCanvas.height - bpMouse.y) / blueprintCanvas.height, 0), 1).toFixed(3);
-      if (blueprintDisplay) {
-        blueprintDisplay.textContent = `X: ${normX} / Y: ${normY}`;
-      }
-    });
-    
-    rectParent.addEventListener('mouseleave', () => {
-      bpMouse.active = false;
-      if (blueprintDisplay) {
-        blueprintDisplay.textContent = 'X: 0.000 / Y: 0.000';
-      }
-    });
-    
-    // Canvas Render Loop
-    function drawBlueprint() {
-      if (!blueprintCanvas || !bpCtx) return;
-      
-      const w = blueprintCanvas.width;
-      const h = blueprintCanvas.height;
-      
-      bpCtx.fillStyle = '#000000';
-      bpCtx.fillRect(0, 0, w, h);
-      
-      // 1. Draw Tech Grid lines
-      bpCtx.strokeStyle = '#0e0e0e';
-      bpCtx.lineWidth = 1;
-      const gridSize = 30;
-      for (let x = 0; x < w; x += gridSize) {
-        bpCtx.beginPath();
-        bpCtx.moveTo(x, 0);
-        bpCtx.lineTo(x, h);
-        bpCtx.stroke();
-      }
-      for (let y = 0; y < h; y += gridSize) {
-        bpCtx.beginPath();
-        bpCtx.moveTo(0, y);
-        bpCtx.lineTo(w, y);
-        bpCtx.stroke();
-      }
-      
-      // 2. Draw Scrolling Waves (oscilloscope sine wave)
-      bpCtx.lineWidth = 1.5;
-      
-      // Wave 1: Primary thin white wave
-      bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-      bpCtx.beginPath();
-      for (let i = 0; i < w; i++) {
-        // Adjust frequency/amp based on mouse position
-        const freqMult = bpMouse.active ? 1 + (bpMouse.x / w) * 1.5 : 1;
-        const ampMult = bpMouse.active ? 0.7 + (1 - bpMouse.y / h) * 0.8 : 1;
-        
-        const y = h / 2 + Math.sin(i * 0.012 * freqMult + bpWaveOffset) * 35 * ampMult;
-        if (i === 0) bpCtx.moveTo(i, y);
-        else bpCtx.lineTo(i, y);
-      }
-      bpCtx.stroke();
-      
-      // Wave 2: Secondary out-of-phase grey wave
-      bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-      bpCtx.beginPath();
-      for (let i = 0; i < w; i++) {
-        const freqMult = bpMouse.active ? 0.8 + (bpMouse.y / h) * 0.5 : 1;
-        const y = h / 2 + Math.sin(i * 0.007 * freqMult - bpWaveOffset * 0.7) * 22;
-        if (i === 0) bpCtx.moveTo(i, y);
-        else bpCtx.lineTo(i, y);
-      }
-      bpCtx.stroke();
-      
-      // 3. Draw crosshairs if mouse is inside blueprint area
-      if (bpMouse.active) {
-        bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-        bpCtx.lineWidth = 0.5;
-        
-        // Horizontal Line
-        bpCtx.beginPath();
-        bpCtx.moveTo(0, bpMouse.y);
-        bpCtx.lineTo(w, bpMouse.y);
-        bpCtx.stroke();
-        
-        // Vertical Line
-        bpCtx.beginPath();
-        bpCtx.moveTo(bpMouse.x, 0);
-        bpCtx.lineTo(bpMouse.x, h);
-        bpCtx.stroke();
-        
-        // Glowing target dot
-        bpCtx.beginPath();
-        bpCtx.arc(bpMouse.x, bpMouse.y, 4, 0, Math.PI * 2);
-        bpCtx.fillStyle = '#ffffff';
-        bpCtx.shadowBlur = 10;
-        bpCtx.shadowColor = '#ffffff';
-        bpCtx.fill();
-        bpCtx.shadowBlur = 0; // reset glow shadow
-        
-        bpCtx.beginPath();
-        bpCtx.arc(bpMouse.x, bpMouse.y, 14, 0, Math.PI * 2);
-        bpCtx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-        bpCtx.lineWidth = 1;
-        bpCtx.stroke();
-      }
-      
-      // Move offset
-      bpWaveOffset += 0.05;
-      bpAnimationId = requestAnimationFrame(drawBlueprint);
-    }
-    
-    // Stop previous loop if any
-    if (bpAnimationId) cancelAnimationFrame(bpAnimationId);
-    drawBlueprint();
+    engPageDashboard.hidden = false;
+    engPageArchive.hidden = true;
+
+    if (engNavDashboard) engNavDashboard.className = engNavActivePage1;
+    if (engNavProjects) engNavProjects.className = engNavIdlePage1;
+    if (engNavDashboardP2) engNavDashboardP2.className = engNavIdlePage2;
+    if (engNavProjectsP2) engNavProjectsP2.className = engNavIdlePage2;
+
+    animateProgressBars();
+    runTerminalBootLogger();
   }
 
-  // --- Skill progress bars animation ---
+  function showProjectsView() {
+    if (!engPageDashboard || !engPageArchive) return;
+
+    engPageDashboard.hidden = true;
+    engPageArchive.hidden = false;
+
+    if (engNavDashboard) engNavDashboard.className = engNavIdlePage1;
+    if (engNavProjects) engNavProjects.className = engNavActivePage1;
+    if (engNavDashboardP2) engNavDashboardP2.className = engNavIdlePage2;
+    if (engNavProjectsP2) engNavProjectsP2.className = engNavActivePage2;
+
+    initSocketConnectionSimulator();
+  }
+
+  // Sidebar navigation click handlers
+  if (engNavDashboard) {
+    engNavDashboard.addEventListener('click', (e) => {
+      e.preventDefault();
+      showDashboardView();
+    });
+  }
+
+  if (engNavProjects) {
+    engNavProjects.addEventListener('click', (e) => {
+      e.preventDefault();
+      showProjectsView();
+    });
+  }
+
+  if (engNavDashboardP2) {
+    engNavDashboardP2.addEventListener('click', (e) => {
+      e.preventDefault();
+      showDashboardView();
+    });
+  }
+
+  if (engNavProjectsP2) {
+    engNavProjectsP2.addEventListener('click', (e) => {
+      e.preventDefault();
+      showProjectsView();
+    });
+  }
+
+  // --- Technical progress bars animation ---
   function animateProgressBars() {
-    const fills = document.querySelectorAll('.progress-bar-fill-tw');
-    fills.forEach(fill => {
-      let targetPct = fill.getAttribute('data-progress');
-      if (!targetPct) {
-        targetPct = fill.style.width || '0%';
-        fill.setAttribute('data-progress', targetPct);
-      }
-      fill.style.width = '0%'; // reset first
+    const dashboardView = document.getElementById('eng-dashboard-view');
+    if (!dashboardView) return;
+
+    const bars = dashboardView.querySelectorAll('.w-full.bg-outline-variant > div');
+    bars.forEach(bar => {
+      const targetWidth = bar.getAttribute('data-progress') || bar.style.width || '0%';
+      bar.setAttribute('data-progress', targetWidth);
+      bar.style.width = '0';
       setTimeout(() => {
-        fill.style.width = targetPct;
+        bar.style.width = targetWidth;
       }, 150);
     });
   }
@@ -729,9 +646,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     bootLines.forEach(line => {
       setTimeout(() => {
-        const lineDiv = document.createElement('div');
+        const lineDiv = document.createElement('p');
         lineDiv.className = 'console-line';
-        lineDiv.innerHTML = `<span class="console-line-prompt">></span>${line.text}`;
+        lineDiv.innerHTML = `<span class="opacity-50">&gt;</span> ${line.text}`;
         consoleBox.appendChild(lineDiv);
         consoleBox.scrollTop = consoleBox.scrollHeight;
       }, line.delay);
@@ -740,52 +657,84 @@ document.addEventListener('DOMContentLoaded', () => {
     isBooted = true;
   }
 
-  // --- Establish Socket connection simulation (Tab 2) ---
-  if (establishSocketBtn) {
-    establishSocketBtn.addEventListener('click', () => {
-      const consoleLog = document.getElementById('socket-console-log');
-      const statusText = document.getElementById('socket-status-text');
-      if (!consoleLog || establishSocketBtn.classList.contains('connected-state')) return;
-      
+  // --- Typewriter / Socket connection simulation logic ---
+  const terminalElement = document.getElementById('terminal-text');
+  const establishSocketBtn = document.getElementById('establish-socket-btn');
+  const socketStatusText = document.getElementById('socket-status-text');
+  
+  const messages = [
+    'INITIALIZING HANDSHAKE...',
+    'ENCRYPTING CHANNEL...',
+    'PROTOCOL: SECURE_COMMS_v4',
+    'READY TO TRANSMIT.'
+  ];
+  let msgIndex = 0;
+  let charIndex = 0;
+  let socketTimeout = null;
+
+  function typeWriter() {
+    if (!terminalElement) return;
+    if (charIndex < messages[msgIndex].length) {
+      terminalElement.textContent += messages[msgIndex].charAt(charIndex);
+      charIndex++;
+      socketTimeout = setTimeout(typeWriter, 50);
+    } else {
+      socketTimeout = setTimeout(() => {
+        if (msgIndex < messages.length - 1) {
+          terminalElement.textContent = '';
+          charIndex = 0;
+          msgIndex++;
+          typeWriter();
+        } else {
+          // Finished typewriter loop, change status
+          if (socketStatusText) {
+            socketStatusText.textContent = 'Status: [ SECURE ]';
+            socketStatusText.style.color = '#ffffff';
+          }
+          if (establishSocketBtn) {
+            establishSocketBtn.textContent = 'SOCKET COMMS ESTABLISHED';
+            establishSocketBtn.disabled = true;
+            establishSocketBtn.className = 'border-all-thin px-8 py-3 bg-black text-[#ffffff] border-[#ffffff] font-label-mono font-bold uppercase transition-all cursor-none';
+          }
+        }
+      }, 1500);
+    }
+  }
+
+  function simulateSocket() {
+    if (!terminalElement) return;
+    if (socketTimeout) clearTimeout(socketTimeout);
+    
+    terminalElement.textContent = '';
+    msgIndex = 0;
+    charIndex = 0;
+    
+    if (socketStatusText) {
+      socketStatusText.textContent = 'Status: [ CONNECTING ]';
+      socketStatusText.style.color = '';
+    }
+    if (establishSocketBtn) {
+      establishSocketBtn.textContent = 'ESTABLISHING SOCKET...';
       establishSocketBtn.disabled = true;
-      establishSocketBtn.textContent = 'ESTABLISHING CONNECTION...';
-      
-      consoleLog.innerHTML = 'SYSTEM@AGRIM_ARCHIVE:~$ INITIALIZING HANDSHAKE... <span class="blink-cursor">█</span>';
-      
-      const handshakeLines = [
-        { text: "CONNECTING TO SOCKET_PORT: 8080...", delay: 800 },
-        { text: "SHAKING HANDS WITH OPERATOR...", delay: 1600 },
-        { text: "SECURE SOCKET ESTABLISHED.", delay: 2400 },
-        { text: "WELCOME BACK, ARCHITECT.", delay: 3000 }
-      ];
-      
-      handshakeLines.forEach(line => {
-        setTimeout(() => {
-          // Replace cursor, append log line, append cursor
-          const currentHTML = consoleLog.innerHTML;
-          const cleanHTML = currentHTML.replace('<span class="blink-cursor">█</span>', '');
-          consoleLog.innerHTML = `${cleanHTML}<br>SYSTEM@AGRIM_ARCHIVE:~$ ${line.text} <span class="blink-cursor">█</span>`;
-          consoleLog.scrollTop = consoleLog.scrollHeight;
-        }, line.delay);
+    }
+    
+    typeWriter();
+  }
+
+  function initSocketConnectionSimulator() {
+    if (establishSocketBtn && !establishSocketBtn.hasListener) {
+      establishSocketBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        simulateSocket();
       });
-      
-      setTimeout(() => {
-        statusText.textContent = 'STATUS: [ CONNECTED ]';
-        statusText.style.color = '#55ff55';
-        statusText.style.fontWeight = 'bold';
-        
-        establishSocketBtn.textContent = 'SECURE CONNECTION LINK ACTIVE';
-        establishSocketBtn.classList.add('connected-state');
-        establishSocketBtn.disabled = true;
-      }, 3300);
-    });
+      establishSocketBtn.hasListener = true;
+      simulateSocket(); // Auto run initial loop
+    }
   }
 
   // --- Unified dashboard initialization module ---
   function initEngineeringDashboard() {
-    initBlueprintCanvas();
-    animateProgressBars();
-    runTerminalBootLogger();
+    showDashboardView();
   }
 
   // --- Service Accordion Logic ---

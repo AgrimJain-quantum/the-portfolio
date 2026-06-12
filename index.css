@@ -83,6 +83,12 @@ body {
   cursor: none; /* Hide default cursor */
 }
 
+a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+
 /* Scrollbar customization */
 ::-webkit-scrollbar {
   width: 8px;

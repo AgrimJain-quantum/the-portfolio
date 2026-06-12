@@ -570,18 +570,14 @@ body.gateway-active {
   font-weight: 500;
 }
 
-/* Center elements */
 .split-center {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  max-width: 460px;
+  align-items: center;
+  text-align: center;
+  max-width: 550px;
   width: 100%;
-  margin: auto 0;
-}
-
-.hero-split-right .split-center {
-  margin-left: auto;
+  margin: auto;
 }
 
 .split-mode-label {

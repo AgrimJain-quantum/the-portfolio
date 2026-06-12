@@ -640,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const bootLines = [
       { text: "Establishing secure connection...", delay: 200 },
       { text: "User ID: AGRIM_JAIN_01", delay: 650 },
-      { text: "Authorization: ARCHITECT", delay: 1100 },
+      { text: "Authorization: ENGINEER", delay: 1100 },
       { text: "Ready for deployment.", delay: 1550 }
     ];
     
